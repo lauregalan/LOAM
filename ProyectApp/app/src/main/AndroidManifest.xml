@@ -5,6 +5,17 @@
     <!-- Para darle permisos de internet a la aplicación -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- permisos para la camara -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <!--permisos de internet de ubicacion-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,6 +26,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectApp"
         tools:targetApi="31">
+
+        <!--path para cachear los mapas-->
+        <meta-data android:name="org.osmdroid.config"
+            android:value="org.osmdroid.config.Configuration"/>
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

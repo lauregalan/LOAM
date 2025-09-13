@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 // cada método de la interfaz representa un endpoint
 interface DolarApi {
     @GET("v1/dolares/blue")
-    suspend fun getDolarBlue(): Response<Dolar>
+    suspend fun getDolarBlue(): Dolar
     //el response es la respuesta de la funcion
     //al ser suspend solo puede ser llamada de otra funcion suspend o de coroutines
 }
