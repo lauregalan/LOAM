@@ -31,6 +31,10 @@
         <meta-data android:name="org.osmdroid.config"
             android:value="org.osmdroid.config.Configuration"/>
 
+        <!-- para que solo ande con los dispositivos compatibles-->
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="required" />
 
         <activity
             android:name=".MainActivity"

@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraManager: CameraManager
     private var cameraId: String? = null
     private var isFlashOn = false
-    private lateinit var map: MapView
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,20 +58,8 @@ class MainActivity : AppCompatActivity() {
                 .get(android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
         }
 
-        val dolarApi = RetrofitHelper.getInstance().create(DolarApi::class.java)
 
 
-        // de una corrutina, que es un bloque asíncrono que maneja la pausa y reanudación.
-        GlobalScope.launch {
-            val result = dolarApi.getDolarBlue() // request al endpoint
-            if (result != null)
-
-                //binding.appBarMain.precioDolar.text = "Precio del dolar blue 💶: " + result.compra.toString();
-                Log.d("DOLAR BLUE: ", result.toString())
-
-        }
-
-        
         setSupportActionBar(binding.appBarMain.toolbar)
 
 
@@ -91,29 +79,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 encenderFlash()
             }
-        }
-
-        //cosas del mapa
-
-        // Inicializa configuración de OSMDroid
-        Configuration.getInstance().load(this, getSharedPreferences("osmdroid", MODE_PRIVATE))
-
-        map = findViewById(R.id.map)
-        map.setMultiTouchControls(true)
-
-        // Controlador del mapa
-        val mapController: IMapController = map.controller
-        mapController.setZoom(15.0)
-
-        // Punto inicial (si aún no tenemos GPS, ponemos algo por defecto, ej: Buenos Aires)
-        val startPoint = GeoPoint(-34.6037, -58.3816)
-        mapController.setCenter(startPoint)
-
-        // Verificar permisos de localización
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-        } else {
-            habilitarMiUbicacion()
         }
 
 
@@ -168,22 +133,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun habilitarMiUbicacion() {
-        val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(this), map)
-        locationOverlay.enableMyLocation()
-        locationOverlay.enableFollowLocation()
-        map.overlays.add(locationOverlay)
-    }
-
-    // Verificar permisos de localización
-
-
-    // Cuando el usuario acepte permisos
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            habilitarMiUbicacion()
-        }
-    }
 
 }

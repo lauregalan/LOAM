@@ -63,4 +63,7 @@ dependencies {
     implementation(libs.osmdroid.wms)
     implementation(libs.osmdroid.mapsforge)
 
+    //libs para arcore
+    implementation(libs.arcore)
+
 }
