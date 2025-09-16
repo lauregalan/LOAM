@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -66,4 +67,14 @@ dependencies {
     //libs para arcore
     implementation(libs.arcore)
 
+    // Importá el BoM (gestiona versiones compatibles de Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0") // Asegúrate de usar la última versión
+    implementation("com.google.android.libraries.places:places:3.3.0") // Asegúrate de usar la última versión
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
 }
+
+apply(plugin = "com.google.gms.google-services")

@@ -8,6 +8,4 @@ data class Dolar(
     val compra: Double,
     val venta: Double,
     val fechaActualizacion: String
-
-
 )
