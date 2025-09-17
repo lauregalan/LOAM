@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ChatFragment"> <!-- Asegúrate de que el context apunte a tu nuevo fragmento -->
+
+    <!-- Este es el TextView donde se mostrará la conversación -->
+    <TextView
+        android:id="@+id/chatTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#E0E0E0"
+        android:padding="8dp"
+        android:scrollbars="vertical"
+        android:text="¡Inicia tu conversación con el especialista!"
+        android:gravity="bottom"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <!-- Este es el contenedor para el campo de texto y el botón de enviar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <!-- Este es el EditText para escribir el mensaje -->
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Escribe tu mensaje..."
+            android:inputType="textCapSentences" />
+
+        <!-- Este es el botón para enviar el mensaje -->
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enviar" />
+    </LinearLayout>
+
+</LinearLayout>

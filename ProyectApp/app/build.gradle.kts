@@ -75,6 +75,7 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.3.0") // Asegúrate de usar la última versión
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
+
 }
 
 apply(plugin = "com.google.gms.google-services")

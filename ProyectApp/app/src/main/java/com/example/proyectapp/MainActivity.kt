@@ -88,6 +88,15 @@ class MainActivity : AppCompatActivity(), LocationActionListener {
             locationServiceManager.requestLocationUpdate()
         }
 
+        val fabChat: FloatingActionButton = binding.root.findViewById(R.id.fab_chat)
+
+        fabChat.setOnClickListener { view ->
+            // Navegar al ChatFragment usando el NavController
+            findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.chatFragment)
+            Snackbar.make(view, "Abriendo chat con especialista...", Snackbar.LENGTH_SHORT)
+                .setAction("Action", null).show()
+        }
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -95,9 +104,10 @@ class MainActivity : AppCompatActivity(), LocationActionListener {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.chatFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
