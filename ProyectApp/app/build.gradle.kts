@@ -49,45 +49,40 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.play.services.location)
-    implementation(libs.firebase.common.ktx)
-    implementation(libs.androidx.media3.common.ktx)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
-    //retrofit dependencias
+    // Dependencias de Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation("com.google.firebase:firebase-database")
 
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
-    implementation(libs.okhttp.logging)
+    // Dependencias de Google Play Services y Mapas
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.libraries.places:places:3.3.0")
 
-    //libs para el mapa
-    implementation(libs.osmdroid.android)
-    implementation(libs.osmdroid.wms)
-    implementation(libs.osmdroid.mapsforge)
-
-    //libs para arcore
+    // Dependencias para ARCore y la cámara
     implementation(libs.arcore)
-
-    //de la camara para el arcore
     implementation(libs.camera.core)
     implementation(libs.camera.camera2)
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
-    implementation(libs.arcore)
 
-    //obj
+    // Librerías de utilidades
     implementation(libs.javagl.obj)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
 
-    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
-    implementation("com.google.firebase:firebase-database")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation("com.google.android.gms:play-services-maps:18.2.0") // Asegúrate de usar la última versión
-    implementation("com.google.android.libraries.places:places:3.3.0") // Asegúrate de usar la última versión
+    // Librerías para el mapa (OSMdroid)
+    implementation(libs.osmdroid.android)
+    implementation(libs.osmdroid.wms)
+    implementation(libs.osmdroid.mapsforge)
+
+    // Otras dependencias
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
+    // Dependencias de test
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
 }
-
-apply(plugin = "com.google.gms.google-services")

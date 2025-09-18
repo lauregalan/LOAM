@@ -1,4 +1,8 @@
 package com.example.proyectapp
+// MainActivity.kt
+
+// Elimina esta importación si existe
+// import androidx.media3.common.util.Log
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,7 +11,7 @@ import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
-import androidx.annotation.OptIn
+// Se elimina la anotación @OptIn
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,8 +22,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectapp.databinding.ActivityMainBinding
 import androidx.core.net.toUri
-import androidx.media3.common.util.Log
-import androidx.media3.common.util.UnstableApi
+// Importación correcta para los logs
+import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -161,7 +165,6 @@ class MainActivity : AppCompatActivity(), LocationActionListener {
     // ----------------------------------------------------------
 
     // ----- Implementación de los métodos de la interfaz LocationActionListener -----
-    @OptIn(UnstableApi::class)
     override fun onLocationRegistered(referencia: String, lat: Double, lon: Double) {
         // Aquí puedes realizar acciones en la UI de tu MainActivity,
         // por ejemplo, mostrar un Snackbar más visible o actualizar un TextView.
@@ -169,7 +172,6 @@ class MainActivity : AppCompatActivity(), LocationActionListener {
         Log.d("MainActivity", "Ubicación registrada: $referencia ($lat, $lon)")
     }
 
-    @OptIn(UnstableApi::class)
     override fun onLocationRegistrationFailed(message: String) {
         // Manejar errores específicos si es necesario en la UI de la Activity.
         // El Toast ya se muestra desde LocationServiceManager, pero aquí podrías añadir más logs o UI.
@@ -177,14 +179,12 @@ class MainActivity : AppCompatActivity(), LocationActionListener {
         Log.e("MainActivity", "Error al registrar ubicación: $message")
     }
 
-    @OptIn(UnstableApi::class)
     override fun onPermissionDenied() {
         // Acciones específicas si los permisos son denegados (ej. deshabilitar un botón)
         Snackbar.make(binding.root, "Permiso de ubicación denegado. Función limitada.", Snackbar.LENGTH_LONG).show()
         Log.w("MainActivity", "Permiso de ubicación denegado.")
     }
 
-    @OptIn(UnstableApi::class)
     override fun onGpsDisabled() {
         // Acciones específicas si el GPS está desactivado
         Snackbar.make(binding.root, "GPS está desactivado. Habilítalo para registrar ubicación.", Snackbar.LENGTH_LONG).show()
