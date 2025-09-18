@@ -17,6 +17,9 @@ okhttp = "4.11.0"
 osmdroid = "6.1.16"
 arcore = "1.42.0"
 camera = "1.2.3"
+playServicesLocation = "21.3.0"
+firebaseCommonKtx = "22.0.1"
+media3CommonKtx = "1.8.0"
 
 
 [libraries]
@@ -44,6 +47,9 @@ camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cam
 camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camera" }
 camera-view = { module = "androidx.camera:camera-view", version.ref = "camera" }
 javagl-obj = { module = "de.javagl:obj", version = "0.4.0" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
+androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

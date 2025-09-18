@@ -22,4 +22,11 @@
         android:name="com.example.proyectapp.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.proyectapp.ChatFragment"
+        android:label="Chat con Especialista"
+        tools:layout="@layout/fragment_chat" />
+
 </navigation>

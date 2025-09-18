@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permisos para obtener la ubicación precisa (GPS, Wi-Fi, etc.) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Permiso para obtener la ubicación aproximada (menos precisa, pero bueno tenerlo) -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Permiso para acceder al estado de la red (necesario para Location Services) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <!-- Para darle permisos de internet a la aplicación -->
     <uses-permission android:name="android.permission.INTERNET" />
 
