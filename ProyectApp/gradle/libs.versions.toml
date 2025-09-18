@@ -16,6 +16,7 @@ retrofit = "2.11.0"
 okhttp = "4.11.0"
 osmdroid = "6.1.16"
 arcore = "1.42.0"
+camera = "1.2.3"
 
 
 [libraries]
@@ -38,7 +39,11 @@ osmdroid-wms = { module = "org.osmdroid:osmdroid-wms", version.ref = "osmdroid" 
 osmdroid-mapsforge = { module = "org.osmdroid:osmdroid-mapsforge", version.ref = "osmdroid" }
 
 arcore = { group = "com.google.ar", name = "core", version.ref = "arcore" }
-
+camera-core = { module = "androidx.camera:camera-core", version.ref = "camera" }
+camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camera" }
+camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camera" }
+camera-view = { module = "androidx.camera:camera-view", version.ref = "camera" }
+javagl-obj = { module = "de.javagl:obj", version = "0.4.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

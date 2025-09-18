@@ -37,6 +37,11 @@
             android:value="required" />
 
         <activity
+            android:name=".HelloArActivity"
+            android:exported="true"
+            android:label="AR Activity" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

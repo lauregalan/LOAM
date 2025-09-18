@@ -4,13 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.hardware.camera2.CameraManager
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.widget.Button
-import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,19 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectapp.databinding.ActivityMainBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import androidx.core.net.toUri
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
-import android.Manifest
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
-import org.osmdroid.api.IMapController
-import org.osmdroid.config.Configuration
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 
 class MainActivity : AppCompatActivity() {
@@ -66,9 +49,11 @@ class MainActivity : AppCompatActivity() {
         //aca el manejo de las acciones del boton flotante
         binding.appBarMain.fab.setOnClickListener {
 
-            Toast.makeText(this, "Abriendo marcador...", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Abriendo marcador...", Toast.LENGTH_SHORT).show()
 
-            irMarcadorTelefono()
+            //irMarcadorTelefono()
+            val intent = Intent(this, HelloArActivity::class.java)
+            startActivity(intent)
         }
 
         //manejo de las acciones para el flash

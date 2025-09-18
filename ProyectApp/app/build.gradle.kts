@@ -66,4 +66,14 @@ dependencies {
     //libs para arcore
     implementation(libs.arcore)
 
+    //de la camara para el arcore
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.arcore)
+
+    //obj
+    implementation(libs.javagl.obj)
+
 }
