@@ -1,4 +1,4 @@
-package com.example.proyectapp
+package com.example.proyectapp.ui.chat
 
 interface ChatUpdateListener {
     fun onMessagesReceived(messages: List<Message>)

@@ -1,15 +1,18 @@
 package com.example.proyectapp.ui.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.proyectapp.DolarApi
+import com.example.proyectapp.HelloArActivity
 import com.example.proyectapp.RetrofitHelper
 import com.example.proyectapp.databinding.FragmentHomeBinding
 import kotlinx.coroutines.GlobalScope
@@ -35,10 +38,12 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+
+        val textView: String = "Engineer's App"
+        //val textView: TextView = binding.textHome
+        //homeViewModel.text.observe(viewLifecycleOwner) {
+        //    textView.text = it
+        //}
         return root
 
 
@@ -51,13 +56,15 @@ class HomeFragment : Fragment() {
 
         val dolarApi = RetrofitHelper.getInstance().create(DolarApi::class.java)
 
-
+        binding.callEngineeringCouncilButton.setOnClickListener {
+            irMarcadorTelefono()
+        }
         // de una corrutina, que es un bloque asíncrono que maneja la pausa y reanudación.
         GlobalScope.launch {
             val result = dolarApi.getDolarBlue() // request al endpoint
             if (result != null)
 
-                binding.precioDolar.text = "Precio del dolar blue 💶: " + result.compra.toString();
+                binding.precioDolar.text = result.compra.toString();
                 Log.d("DOLAR BLUE: ", result.toString())
 
         }
@@ -69,5 +76,9 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-
+    private fun irMarcadorTelefono(){
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = "tel:2302354597".toUri() //identificador de recurso, aca tel
+        startActivity(intent)
+    }
 }

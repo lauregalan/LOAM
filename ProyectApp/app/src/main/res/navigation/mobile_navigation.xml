@@ -19,13 +19,13 @@
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.proyectapp.ui.slideshow.SlideshowFragment"
+        android:name="com.example.proyectapp.ui.tools.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.example.proyectapp.ChatFragment"
+        android:name="com.example.proyectapp.ui.chat.ChatFragment"
         android:label="Chat con Especialista"
         tools:layout="@layout/fragment_chat" />
 

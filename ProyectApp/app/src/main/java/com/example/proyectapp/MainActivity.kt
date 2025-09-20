@@ -5,13 +5,11 @@ package com.example.proyectapp
 // import androidx.media3.common.util.Log
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.hardware.camera2.CameraManager
+
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
-// Se elimina la anotación @OptIn
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -21,8 +19,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectapp.databinding.ActivityMainBinding
-import androidx.core.net.toUri
-// Importación correcta para los logs
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -37,9 +33,7 @@ class MainActivity : AppCompatActivity(), LocationActionListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var cameraManager: CameraManager
-    private var cameraId: String? = null
-    private var isFlashOn = false
+
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationServiceManager: LocationServiceManager
@@ -53,34 +47,9 @@ class MainActivity : AppCompatActivity(), LocationActionListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicializar CameraManager
-        cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        cameraId = cameraManager.cameraIdList.first {
-            cameraManager.getCameraCharacteristics(it)
-                .get(android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
-        }
+
 
         setSupportActionBar(binding.appBarMain.toolbar)
-
-        //aca el manejo de las acciones del boton flotante
-        binding.appBarMain.fab.setOnClickListener {
-
-            //Toast.makeText(this, "Abriendo marcador...", Toast.LENGTH_SHORT).show()
-
-            //irMarcadorTelefono()
-            val intent = Intent(this, HelloArActivity::class.java)
-            startActivity(intent)
-        }
-
-        //manejo de las acciones para el flash
-
-        binding.appBarMain.fab2.setOnClickListener {
-            if (isFlashOn) {
-                apagarFlash()
-            } else {
-                encenderFlash()
-            }
-        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val firebaseDatabase = Firebase.database("https://loam-5a61f-default-rtdb.firebaseio.com")
@@ -122,30 +91,12 @@ class MainActivity : AppCompatActivity(), LocationActionListener {
         navView.setupWithNavController(navController)
     }
 
-    private fun encenderFlash() {
-        cameraId?.let {
-            cameraManager.setTorchMode(it, true)
-            isFlashOn = true
-        }
-    }
 
-    private fun apagarFlash() {
-        cameraId?.let {
-            cameraManager.setTorchMode(it, false)
-            isFlashOn = false
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
-    }
-
-    private fun irMarcadorTelefono(){
-        val intent = Intent(Intent.ACTION_DIAL)
-        intent.data = "tel:2302354597".toUri() //identificador de recurso, aca tel
-        startActivity(intent)
     }
 
     override fun onSupportNavigateUp(): Boolean {

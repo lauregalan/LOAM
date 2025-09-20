@@ -1,4 +1,4 @@
-package com.example.proyectapp
+package com.example.proyectapp.ui.chat
 
 data class Message(
     var sender: String = "",

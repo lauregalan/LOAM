@@ -43,24 +43,12 @@
             android:padding="16dp">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_dialog_email" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:srcCompat="@android:drawable/ic_dialog_email" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_registrar_ubicacion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:srcCompat="@drawable/ic_add_location_black_24dp" />
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_chat"
                 android:layout_width="wrap_content"
@@ -68,14 +56,11 @@
                 android:layout_marginTop="12dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:srcCompat="@android:drawable/ic_menu_send"/>
+                app:srcCompat="@android:drawable/ic_menu_send" />
 
 
         </LinearLayout>
     </FrameLayout>
-
-
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

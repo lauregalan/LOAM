@@ -552,7 +552,6 @@ class HelloArRenderer(val activity: HelloArActivity) :
         wrappedAnchors.removeAt(0)
       }
 
-      // El nuevo anchor se añade AQUÍ.
       if(wrappedAnchors.size >=2){
         wrappedAnchors.clear()
         distanceCallback?.onDistanceUpdated(0.00)
@@ -560,7 +559,6 @@ class HelloArRenderer(val activity: HelloArActivity) :
         wrappedAnchors.add(WrappedAnchor(firstHitResult.createAnchor(), firstHitResult.trackable))
       }
 
-      // Ahora, con al menos un nuevo anchor en la lista, es seguro llamar a la función.
       calcularDistanciaEntreAnclajes()
 
       activity.runOnUiThread { activity.view.showOcclusionDialogIfNeeded() }

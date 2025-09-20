@@ -1,5 +1,5 @@
 // Archivo: app/src/main/java/com/example/proyectapp/ChatManager.kt
-package com.example.proyectapp
+package com.example.proyectapp.ui.chat
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
