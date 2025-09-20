@@ -1,5 +1,4 @@
-package com.example.proyectapp
-
+package com.example.proyectapp.dolar
 
 // plain old java object para poder representar el dato dolar
 data class Dolar(

@@ -1,7 +1,6 @@
-package com.example.proyectapp
-import retrofit2.Call;
-import retrofit2.Response
-import retrofit2.http.GET;
+package com.example.proyectapp.dolar
+
+import retrofit2.http.GET
 
 //creo la interfaz de retrofit para añadir endpoints de la url
 // cada método de la interfaz representa un endpoint

@@ -1,32 +1,18 @@
-/*
- * Copyright 2021 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package com.example.proyectapp
+package com.example.proyectapp.ar
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.ar.core.Config
-import com.google.ar.core.Config.InstantPlacementMode
-import com.google.ar.core.Session
+import com.example.proyectapp.ar.ARCoreSessionLifecycleHelper
+import com.example.proyectapp.ar.HelloArView
 import com.example.proyectapp.common.helpers.CameraPermissionHelper
 import com.example.proyectapp.common.helpers.DepthSettings
 import com.example.proyectapp.common.helpers.FullScreenHelper
 import com.example.proyectapp.common.helpers.InstantPlacementSettings
 import com.example.proyectapp.common.samplerender.SampleRender
+import com.google.ar.core.Config
+import com.google.ar.core.Session
 import com.google.ar.core.exceptions.CameraNotAvailableException
 import com.google.ar.core.exceptions.UnavailableApkTooOldException
 import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException
@@ -92,7 +78,7 @@ class HelloArActivity : AppCompatActivity() {
     renderer.setDistanceCallback(view)
 
     // Sets up an example renderer using our HelloARRenderer.
-    SampleRender(view.surfaceView, renderer, assets)
+      SampleRender(view.surfaceView, renderer, assets)
 
     depthSettings.onCreate(this)
     instantPlacementSettings.onCreate(this)
@@ -115,9 +101,9 @@ class HelloArActivity : AppCompatActivity() {
         // Instant Placement is used if it is configured in Hello AR's settings.
         instantPlacementMode =
           if (instantPlacementSettings.isInstantPlacementEnabled) {
-            InstantPlacementMode.LOCAL_Y_UP
+            Config.InstantPlacementMode.LOCAL_Y_UP
           } else {
-            InstantPlacementMode.DISABLED
+            Config.InstantPlacementMode.DISABLED
           }
       }
     )

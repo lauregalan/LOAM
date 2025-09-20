@@ -49,7 +49,7 @@
             android:value="required" />
 
         <activity
-            android:name=".HelloArActivity"
+            android:name=".ar.HelloArActivity"
             android:exported="true"
             android:label="AR Activity" />
 

@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.proyectapp.HelloArActivity
+import com.example.proyectapp.ar.HelloArActivity
 import com.example.proyectapp.databinding.FragmentSlideshowBinding
 import com.example.proyectapp.ui.home.HomeViewModel
 
