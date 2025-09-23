@@ -32,7 +32,7 @@ class ChatFragment : Fragment(), ChatUpdateListener {
         // **ACTUALIZACIÓN DE IDS**
         // Los IDs del XML han cambiado, los actualizamos aquí
         messageEditText = view.findViewById(R.id.editTextMessage)
-        sendButton = view.findViewById(R.id.imageButtonSend)
+        sendButton = view.findViewById(R.id.buttonSend)
         recyclerView = view.findViewById(R.id.chatRecyclerView)
 
         // Inicializar el RecyclerView y su adaptador

@@ -10,11 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.proyectapp.dolar.DolarApi
+import androidx.navigation.fragment.findNavController
+import com.example.proyectapp.R
 import com.example.proyectapp.RetrofitHelper
 import com.example.proyectapp.databinding.FragmentHomeBinding
+import com.example.proyectapp.dolar.DolarApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,46 +35,60 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configura el listener para el botón de llamada
-        binding.callEngineeringCouncilButton.setOnClickListener {
-            irMarcadorTelefono()
-        }
+        // Asigna las acciones a cada widget del dashboard
+        setupDashboardListeners()
 
-        // Obtiene el precio del dólar de forma segura
+        // Obtiene el precio del dólar de la API
         obtenerPrecioDolar()
     }
 
+    private fun setupDashboardListeners() {
+        val navController = findNavController()
+
+        binding.cardChat.setOnClickListener {
+            // Asegúrate de que el id 'nav_chat' exista en tu grafo de navegación
+            navController.navigate(R.id.nav_chat)
+        }
+
+        binding.cardGallery.setOnClickListener {
+            // Navega al fragment del mapa (Gallery)
+            navController.navigate(R.id.nav_gallery)
+        }
+
+        binding.cardSlideshow.setOnClickListener {
+            // Navega al fragment de multimedia (Slideshow)
+            navController.navigate(R.id.nav_slideshow)
+        }
+
+        binding.callEngineeringCouncilButton.setOnClickListener {
+            // Llama a la función para abrir el marcador del teléfono
+            irMarcadorTelefono()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun obtenerPrecioDolar() {
-        // Usamos lifecycleScope: la corrutina se cancela si el fragmento se destruye
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // Hacemos la llamada a la API en el hilo de IO (Entrada/Salida)
                 val result = withContext(Dispatchers.IO) {
                     RetrofitHelper.getInstance().create(DolarApi::class.java).getDolarBlue()
                 }
 
-                // Volvemos al hilo Principal (Main) para actualizar la UI
                 if (result != null) {
-                    binding.precioDolar.text = "$${result.compra}" // Formato más legible
+                    binding.precioDolar.text = "$${result.compra}"
                     Log.d("DOLAR_BLUE", "Precio de compra: ${result.compra}")
                 } else {
                     binding.precioDolar.text = "N/A"
-                    Log.w("DOLAR_BLUE", "La respuesta de la API fue nula.")
                 }
             } catch (e: IOException) {
-                // Manejo de errores de red (ej: sin internet)
                 binding.precioDolar.text = "Error"
                 Log.e("DOLAR_BLUE", "Error de red: ${e.message}")
-                Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                // Manejo de otros errores (ej: parsing, etc.)
                 binding.precioDolar.text = "Error"
                 Log.e("DOLAR_BLUE", "Error inesperado: ${e.message}")
-                Toast.makeText(context, "Ocurrió un error", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -81,10 +96,9 @@ class HomeFragment : Fragment() {
     private fun irMarcadorTelefono() {
         try {
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:2302354597")
+            intent.data = Uri.parse("tel:2302354597") // Reemplaza con el número correcto
             startActivity(intent)
         } catch (e: Exception) {
-            // Maneja el caso en que no se pueda abrir el marcador (ej: en una tablet sin teléfono)
             Toast.makeText(requireContext(), "No se puede realizar la llamada", Toast.LENGTH_SHORT).show()
             Log.e("HomeFragment", "Error al intentar abrir el marcador: ${e.message}")
         }
@@ -95,3 +109,4 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
+
