@@ -20,6 +20,9 @@ camera = "1.2.3"
 playServicesLocation = "21.3.0"
 firebaseCommonKtx = "22.0.1"
 media3CommonKtx = "1.8.0"
+litert = "2.0.2"
+protoliteWellKnownTypes = "18.0.1"
+uiTextAndroid = "1.9.1"
 
 
 [libraries]
@@ -50,6 +53,9 @@ javagl-obj = { module = "de.javagl:obj", version = "0.4.0" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
+litert = { group = "com.google.ai.edge.litert", name = "litert", version.ref = "litert" }
+protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
+androidx-ui-text-android = { group = "androidx.compose.ui", name = "ui-text-android", version.ref = "uiTextAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

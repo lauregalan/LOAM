@@ -79,6 +79,9 @@ dependencies {
 
     // Otras dependencias
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation(libs.litert)
+    implementation(libs.protolite.well.known.types)
+    implementation(libs.androidx.ui.text.android)
 
     // Dependencias de test
     testImplementation(libs.junit)
