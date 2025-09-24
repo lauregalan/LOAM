@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
-        android:id="@+id/chatFragment"
+        android:id="@+id/nav_chat"
         android:name="com.example.proyectapp.ui.chat.ChatFragment"
         android:label="Chat con Especialista"
         tools:layout="@layout/fragment_chat" />

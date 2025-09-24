@@ -2,83 +2,111 @@ package com.example.proyectapp.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.net.toUri
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.proyectapp.DolarApi
-import com.example.proyectapp.HelloArActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.proyectapp.R
 import com.example.proyectapp.RetrofitHelper
 import com.example.proyectapp.databinding.FragmentHomeBinding
-import kotlinx.coroutines.GlobalScope
+import com.example.proyectapp.dolar.DolarApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
+import kotlinx.coroutines.withContext
+import java.io.IOException
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    //inciamos la logica aca
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-
-        val textView: String = "Engineer's App"
-        //val textView: TextView = binding.textHome
-        //homeViewModel.text.observe(viewLifecycleOwner) {
-        //    textView.text = it
-        //}
-        return root
-
-
-
+        return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dolarApi = RetrofitHelper.getInstance().create(DolarApi::class.java)
+        // Asigna las acciones a cada widget del dashboard
+        setupDashboardListeners()
+
+        // Obtiene el precio del dólar de la API
+        obtenerPrecioDolar()
+    }
+
+    private fun setupDashboardListeners() {
+        val navController = findNavController()
+
+        binding.cardChat.setOnClickListener {
+            // Asegúrate de que el id 'nav_chat' exista en tu grafo de navegación
+            navController.navigate(R.id.nav_chat)
+        }
+
+        binding.cardGallery.setOnClickListener {
+            // Navega al fragment del mapa (Gallery)
+            navController.navigate(R.id.nav_gallery)
+        }
+
+        binding.cardSlideshow.setOnClickListener {
+            // Navega al fragment de multimedia (Slideshow)
+            navController.navigate(R.id.nav_slideshow)
+        }
 
         binding.callEngineeringCouncilButton.setOnClickListener {
+            // Llama a la función para abrir el marcador del teléfono
             irMarcadorTelefono()
         }
-        // de una corrutina, que es un bloque asíncrono que maneja la pausa y reanudación.
-        GlobalScope.launch {
-            val result = dolarApi.getDolarBlue() // request al endpoint
-            if (result != null)
-
-                binding.precioDolar.text = result.compra.toString();
-                Log.d("DOLAR BLUE: ", result.toString())
-
-        }
-
     }
-    //al destruir la vista
+
+    @SuppressLint("SetTextI18n")
+    private fun obtenerPrecioDolar() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    RetrofitHelper.getInstance().create(DolarApi::class.java).getDolarBlue()
+                }
+
+                if (result != null) {
+                    binding.precioDolar.text = "$${result.compra}"
+                    Log.d("DOLAR_BLUE", "Precio de compra: ${result.compra}")
+                } else {
+                    binding.precioDolar.text = "N/A"
+                }
+            } catch (e: IOException) {
+                binding.precioDolar.text = "Error"
+                Log.e("DOLAR_BLUE", "Error de red: ${e.message}")
+            } catch (e: Exception) {
+                binding.precioDolar.text = "Error"
+                Log.e("DOLAR_BLUE", "Error inesperado: ${e.message}")
+            }
+        }
+    }
+
+    private fun irMarcadorTelefono() {
+        try {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:2302354597") // Reemplaza con el número correcto
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "No se puede realizar la llamada", Toast.LENGTH_SHORT).show()
+            Log.e("HomeFragment", "Error al intentar abrir el marcador: ${e.message}")
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-    private fun irMarcadorTelefono(){
-        val intent = Intent(Intent.ACTION_DIAL)
-        intent.data = "tel:2302354597".toUri() //identificador de recurso, aca tel
-        startActivity(intent)
-    }
 }
+
