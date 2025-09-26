@@ -20,7 +20,7 @@ import android.opengl.Matrix
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.example.proyectapp.DistanceCallback
+import com.example.proyectapp.interfaces.DistanceCallback
 import com.example.proyectapp.R
 import com.google.ar.core.Anchor
 import com.google.ar.core.Camera

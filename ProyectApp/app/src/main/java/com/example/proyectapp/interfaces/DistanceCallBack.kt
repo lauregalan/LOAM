@@ -1,4 +1,4 @@
-package com.example.proyectapp
+package com.example.proyectapp.interfaces
 
 // DistanceCallback.kt
 interface DistanceCallback {

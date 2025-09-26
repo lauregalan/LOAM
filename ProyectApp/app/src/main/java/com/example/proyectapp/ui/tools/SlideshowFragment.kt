@@ -38,11 +38,7 @@ class SlideshowFragment : Fragment() {
     private var cameraId: String? = null
     private var isFlashOn = false
     private lateinit var cameraManager: CameraManager
-    private lateinit var tempPhotoUri: Uri
-    private val REQUEST_VIDEO_CAPTURE = 1
-    private var videoUri: Uri? = null
     private var mediaRecorder: MediaRecorder? = null
-    private var audioUri: Uri? = null
     //inciamos la logica aca
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -127,9 +123,24 @@ class SlideshowFragment : Fragment() {
     private val launchCamera =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                Toast.makeText(requireContext(), "¡Video guardado en la galería!", Toast.LENGTH_LONG).show()
+                val videoUri = result.data?.data
+                if (videoUri != null) {
+                    Toast.makeText(requireContext(), "¡Video guardado en: $videoUri!", Toast.LENGTH_LONG).show()
+                }
             }
         }
+    //para el audio
+    private val recordAudioLauncher = registerForActivityResult(
+    ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val audioUri: Uri? = result.data?.data
+            if (audioUri != null) {
+                Log.d("AUDIO", "Audio guardado en: $audioUri")
+            }
+        }
+    }
+
     /*iniciar una actividad secundaria y obtener un resultado de ella de una manera más escalable
      y organizada en el desarrollo de aplicaciones Android */
 
@@ -139,26 +150,24 @@ class SlideshowFragment : Fragment() {
      */
 
     private fun grabarVideo() {
-
+        /*
         val values = ContentValues().apply {
             put(MediaStore.Video.Media.TITLE, "mi_video")
             put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-        }
-        /*creo una entrada de mediastore */
+        }*/
 
+        /*creo una entrada de mediastore */
+        /* no dejo que la camra decida
         videoUri = requireContext().contentResolver.insert(
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
             values
-        )
+        ) */
 
         /* con contentResolver hacemos
         acceso a los datos asociados a un Uri; en este caso los modificamos*/
 
         view?.post {
-            val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE).apply {
-                putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
-
-            }
+            val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             launchCamera.launch(intent)
         }
         /* le meto retraso para que el wlm no me tire error pore
@@ -166,29 +175,9 @@ class SlideshowFragment : Fragment() {
     }
 
     private fun grabarAudio() {
-        val values = ContentValues().apply {
-            put(MediaStore.Audio.Media.TITLE, "mi_audio")
-            put(MediaStore.Audio.Media.DISPLAY_NAME, "mi_audio.m4a")
-            put(MediaStore.Audio.Media.MIME_TYPE, "audio/mp4") // AAC en contenedor mp4/m4a
-        }
+        val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
+        recordAudioLauncher.launch(intent)
 
-        audioUri = requireContext().contentResolver.insert(
-            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-            values
-        )
-
-        val fd = requireContext().contentResolver.openFileDescriptor(audioUri!!, "w")?.fileDescriptor
-
-        mediaRecorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-            setOutputFile(fd)
-            prepare()
-            start()
-        }
-
-        Toast.makeText(requireContext(), "Grabando audio...", Toast.LENGTH_SHORT).show()
     }
 
     private fun detenerAudio() {

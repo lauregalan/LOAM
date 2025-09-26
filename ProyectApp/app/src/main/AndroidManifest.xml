@@ -23,7 +23,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <!-- permisos para guardar cosas en el almacenamiento -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
+
 
     <!-- para el audio-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />

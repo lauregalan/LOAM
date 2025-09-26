@@ -1,19 +1,25 @@
 package com.example.proyectapp.ui.home
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
+import android.os.BatteryManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.proyectapp.R
-import com.example.proyectapp.RetrofitHelper
+import com.example.proyectapp.dolar.RetrofitHelper
 import com.example.proyectapp.databinding.FragmentHomeBinding
 import com.example.proyectapp.dolar.DolarApi
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +31,17 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    // Registramos el launcher
+    /*
+    private val batteryReceiver = object : BroadcastReceiver() { //escuchamos eventos del sistema
+        override fun onReceive(context: Context, intent: Intent) {
+            val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) // el sistema envia cada vez q cambia la bateria
+            val batteryPct = level
+
+            Toast.makeText(requireContext(), batteryPct, Toast.LENGTH_SHORT).show()
+
+        }
+    */
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +85,18 @@ class HomeFragment : Fragment() {
             irMarcadorTelefono()
         }
     }
+    /*
+    override fun onResume() {
+        super.onResume()
+        val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        requireContext().registerReceiver(batteryReceiver, intentFilter)
+
+    }*/
+    /*
+    override fun onPause() {
+        super.onPause()
+        requireContext().unregisterReceiver(batteryReceiver)
+    }*/
 
     @SuppressLint("SetTextI18n")
     private fun obtenerPrecioDolar() {

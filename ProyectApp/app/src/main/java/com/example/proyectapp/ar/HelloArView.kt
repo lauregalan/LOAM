@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.example.proyectapp.DistanceCallback
+import com.example.proyectapp.interfaces.DistanceCallback
 import com.example.proyectapp.R
 import com.example.proyectapp.common.helpers.SnackbarHelper
 import com.example.proyectapp.common.helpers.TapHelper
