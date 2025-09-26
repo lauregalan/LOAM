@@ -1,11 +1,8 @@
 package com.example.proyectapp.ui.home
 
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_OK
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.BatteryManager
 import android.os.Bundle
@@ -14,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -31,17 +27,6 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    // Registramos el launcher
-    /*
-    private val batteryReceiver = object : BroadcastReceiver() { //escuchamos eventos del sistema
-        override fun onReceive(context: Context, intent: Intent) {
-            val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) // el sistema envia cada vez q cambia la bateria
-            val batteryPct = level
-
-            Toast.makeText(requireContext(), batteryPct, Toast.LENGTH_SHORT).show()
-
-        }
-    */
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +45,15 @@ class HomeFragment : Fragment() {
 
         // Obtiene el precio del dólar de la API
         obtenerPrecioDolar()
+
+        val horasRestantes = calcularTiempoBateria(requireContext())
+
+        if (horasRestantes != null) {
+            println("Duración estimada: %.2f horas".format(horasRestantes))
+        } else {
+            println("No disponible en este dispositivo")
+        }
+
     }
 
     private fun setupDashboardListeners() {
@@ -85,18 +79,6 @@ class HomeFragment : Fragment() {
             irMarcadorTelefono()
         }
     }
-    /*
-    override fun onResume() {
-        super.onResume()
-        val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        requireContext().registerReceiver(batteryReceiver, intentFilter)
-
-    }*/
-    /*
-    override fun onPause() {
-        super.onPause()
-        requireContext().unregisterReceiver(batteryReceiver)
-    }*/
 
     @SuppressLint("SetTextI18n")
     private fun obtenerPrecioDolar() {
@@ -137,5 +119,34 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+
+    fun calcularTiempoBateria(context: Context): Double? {
+        val bm = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+
+        // Nivel actual de batería (%)
+        val nivel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
+        // Carga total (mAh) → a veces no está disponible, devuelve 0
+        val cargaTotal = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER)
+
+        // Consumo instantáneo (µA, negativo cuando se descarga)
+        val corriente = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
+
+        if (cargaTotal == 0 || corriente == 0) {
+            return null // no disponible en este dispositivo
+        }
+
+        // mAh restantes
+        val cargaRestante = (cargaTotal * (nivel / 100.0))
+
+        // convertir consumo a mA
+        val consumoMA = kotlin.math.abs(corriente) / 1000.0
+
+        // duración estimada en horas
+        return if (consumoMA > 0) cargaRestante / consumoMA else null
+    }
+
 }
 
