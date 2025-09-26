@@ -1,27 +1,22 @@
 package com.example.proyectapp.ui.home
 
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_OK
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
-import android.os.BatteryManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.proyectapp.R
-import com.example.proyectapp.dolar.RetrofitHelper
 import com.example.proyectapp.databinding.FragmentHomeBinding
 import com.example.proyectapp.dolar.DolarApi
+import com.example.proyectapp.dolar.RetrofitHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,17 +26,9 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    // Registramos el launcher
-    /*
-    private val batteryReceiver = object : BroadcastReceiver() { //escuchamos eventos del sistema
-        override fun onReceive(context: Context, intent: Intent) {
-            val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) // el sistema envia cada vez q cambia la bateria
-            val batteryPct = level
 
-            Toast.makeText(requireContext(), batteryPct, Toast.LENGTH_SHORT).show()
-
-        }
-    */
+    // Declara la variable para el ViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,8 +42,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inicializa el ViewModel
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         // Asigna las acciones a cada widget del dashboard
         setupDashboardListeners()
+
+        // Comienza a observar los datos de Firebase
+        observeReferencePrices()
 
         // Obtiene el precio del dólar de la API
         obtenerPrecioDolar()
@@ -66,37 +59,48 @@ class HomeFragment : Fragment() {
         val navController = findNavController()
 
         binding.cardChat.setOnClickListener {
-            // Asegúrate de que el id 'nav_chat' exista en tu grafo de navegación
             navController.navigate(R.id.nav_chat)
         }
 
         binding.cardGallery.setOnClickListener {
-            // Navega al fragment del mapa (Gallery)
             navController.navigate(R.id.nav_gallery)
         }
 
+
         binding.cardSlideshow.setOnClickListener {
-            // Navega al fragment de multimedia (Slideshow)
-            navController.navigate(R.id.nav_slideshow)
+             navController.navigate(R.id.nav_slideshow)
         }
 
         binding.callEngineeringCouncilButton.setOnClickListener {
-            // Llama a la función para abrir el marcador del teléfono
             irMarcadorTelefono()
         }
     }
-    /*
-    override fun onResume() {
-        super.onResume()
-        val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        requireContext().registerReceiver(batteryReceiver, intentFilter)
 
-    }*/
-    /*
-    override fun onPause() {
-        super.onPause()
-        requireContext().unregisterReceiver(batteryReceiver)
-    }*/
+    private fun observeReferencePrices() {
+        homeViewModel.prices.observe(viewLifecycleOwner) { prices ->
+            if (prices != null) {
+                // Actualiza la UI con los nuevos precios formateados
+                binding.textPriceConstruction.text = String.format("$%.2f", prices.construccionM2)
+                binding.textPriceFees.text = String.format("$%.2f", prices.honorariosHora)
+                binding.textPriceStructural.text = String.format("$%.2f/m²", prices.calculoEstructuralM2)
+                binding.textPriceManagement.text = String.format("%.0f%%", prices.direccionObraPorcentaje)
+            } else {
+                // Muestra un estado de carga mientras se obtienen los datos
+                val loadingText = "Cargando..."
+                binding.textPriceConstruction.text = loadingText
+                binding.textPriceFees.text = loadingText
+                binding.textPriceStructural.text = loadingText
+                binding.textPriceManagement.text = loadingText
+            }
+        }
+
+        homeViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                // Muestra un Toast si Firebase da un error
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 
     @SuppressLint("SetTextI18n")
     private fun obtenerPrecioDolar() {
@@ -138,4 +142,3 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
-
