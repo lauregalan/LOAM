@@ -38,7 +38,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    init {
+    init { //cuando arrancas la pantallas
         // Al iniciar el ViewModel, se añade el listener para escuchar cambios en tiempo real.
         database.addValueEventListener(valueEventListener)
     }

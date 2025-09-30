@@ -1,8 +1,11 @@
 package com.example.proyectapp.ui.home
+
 import android.os.BatteryManager
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +30,8 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    var lastBatteryPct: Int = -1
+    var lastTime: Long = 0
 
     // Declara la variable para el ViewModel
     private lateinit var homeViewModel: HomeViewModel
@@ -40,6 +45,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("DefaultLocale")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,14 +61,19 @@ class HomeFragment : Fragment() {
         // Obtiene el precio del dólar de la API
         obtenerPrecioDolar()
 
-        val horasRestantes = calcularTiempoBateria(requireContext())
+        calcularTiempoBateriaInicial(requireContext())
 
-        if (horasRestantes != null) {
-            println("Duración estimada: %.2f horas".format(horasRestantes))
-        } else {
-            println("No disponible en este dispositivo")
-        }
+    }
 
+    @SuppressLint("DefaultLocale")
+    fun calcularTiempoBateriaInicial(context: Context) {
+        val bm = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+
+        // Nivel actual de batería (%)
+        val nivel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
+        val tiempoBat = nivel * 0.0833333
+        binding.batteryInfo.text = String.format("Duración estimada: %.2f horas", tiempoBat)
     }
 
     private fun setupDashboardListeners() {
@@ -83,6 +94,10 @@ class HomeFragment : Fragment() {
 
         binding.callEngineeringCouncilButton.setOnClickListener {
             irMarcadorTelefono()
+        }
+
+        binding.cardWeb.setOnClickListener{
+            navController.navigate(R.id.nav_web)
         }
     }
     private fun observeReferencePrices() {
@@ -110,6 +125,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
     @SuppressLint("SetTextI18n")
     private fun obtenerPrecioDolar() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -151,31 +167,42 @@ class HomeFragment : Fragment() {
     }
 
 
+    private val batteryReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent ?: return
+            val nivel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) // el nivel de la bat actual
 
-    fun calcularTiempoBateria(context: Context): Double? {
-        val bm = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+            //guardo el tiempo actual
+            val currentTime = System.currentTimeMillis()
 
-        // Nivel actual de batería (%)
-        val nivel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+            //si bajo la bat hago el calculo
+            if (lastBatteryPct != -1 && nivel < lastBatteryPct) {
+                val tiempoPorciento = currentTime - lastTime
+                lastTime = currentTime
+                lastBatteryPct = nivel
 
-        // Carga total (mAh) → a veces no está disponible, devuelve 0
-        val cargaTotal = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER)
+                val tiempoHorasPorciento = tiempoPorciento / 1000.0 / 3600.0 // lo paso a horas
+                val tiempoRestante = tiempoHorasPorciento * nivel
 
-        // Consumo instantáneo (µA, negativo cuando se descarga)
-        val corriente = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
-
-        if (cargaTotal == 0 || corriente == 0) {
-            return null // no disponible en este dispositivo
+                binding.batteryInfo.text = String.format("Duración estimada: %.2f horas", tiempoRestante)
+            } else if (lastBatteryPct == -1) {
+                lastBatteryPct = nivel
+                lastTime = currentTime
+            }
         }
-
-        // mAh restantes
-        val cargaRestante = (cargaTotal * (nivel / 100.0))
-
-        // convertir consumo a mA
-        val consumoMA = kotlin.math.abs(corriente) / 1000.0
-
-        // duración estimada en horas
-        return if (consumoMA > 0) cargaRestante / consumoMA else null
     }
+    override fun onResume() {
+        super.onResume()
+        requireContext().registerReceiver(batteryReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+    }
+    override fun onPause() {
+        super.onPause()
+        requireContext().unregisterReceiver(batteryReceiver)
+    }
+
+
+
+
+
 
 }

@@ -29,4 +29,10 @@
         android:label="Chat con Especialista"
         tools:layout="@layout/fragment_chat" />
 
+    <fragment
+        android:id="@+id/nav_web"
+        android:name="com.example.proyectapp.ui.webview.WebViewFragment"
+        android:label="Web"
+        tools:layout="@layout/fragment_webview" />
+
 </navigation>
